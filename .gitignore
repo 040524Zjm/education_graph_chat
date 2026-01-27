@@ -15,6 +15,9 @@ venv/
 # Data
 data/processed/
 
+# uie_pytorch
+uie_pytorch/
+
 # Finetuned models
 finetuned/checkpoint/
 
