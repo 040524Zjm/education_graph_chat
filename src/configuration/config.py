@@ -30,3 +30,5 @@ NEO4J_CONFIG = {
 # 其他配置
 AGENT_WITH_MEMORY = True
 AGENT_STREAM_OUTPUT = True
+
+DEVICE = 'cpu'
