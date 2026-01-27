@@ -9,9 +9,9 @@ neo4j_password = os.getenv('NEO4J_PASSWORD')
 
 # 目录
 DATA_DIR = ROOT_DIR / 'data'
-
-
-
+WEB_STATIC_DIR = ROOT_DIR / "src" / "backend" /"templates"
+EMBEDDING_MODEL_PATH = '/Users/zjm/LLM_path/pretrained/bge-base-zh-v1.5'
+VECTOR_STORE_DIR = ROOT_DIR / 'data' / 'vectorStore'
 
 # 数据库
 MYSQL_CONFIG = {
@@ -24,4 +24,9 @@ MYSQL_CONFIG = {
 
 NEO4J_CONFIG = {
     'uri': 'neo4j://localhost',
+    'auth': ('neo4j', neo4j_password)
 }
+
+# 其他配置
+AGENT_WITH_MEMORY = True
+AGENT_STREAM_OUTPUT = True
