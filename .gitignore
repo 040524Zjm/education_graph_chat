@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.venv/
+
+# IDEs
+.idea/
+.vscode/
+
+# Data
+data/processed/
+
+# Finetuned models
+finetuned/checkpoint/
+
+# Logs
+*.log
+
+# OS specific
+.DS_Store
+
+# env
+.env
