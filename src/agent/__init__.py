@@ -18,7 +18,7 @@ def get_agent(neo4j_schema):
     # 构造llm
     llm = ChatDeepSeek(
         model='deepseek-chat',
-
+        api_key=config.DEEPSEEK_API_KEY,
     )
     # 构造tools
     neo4j_query_tool = tool(neo4j_query, args_schema=Neo4jQueryParams)

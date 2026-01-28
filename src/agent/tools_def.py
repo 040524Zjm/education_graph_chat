@@ -6,7 +6,7 @@ from agent.prompts import cypher_checker_prompt
 from agent.schema import CypherCheckResponse
 from datasync.entity_alignment import EntityAlignment
 from configuration.dependency import neo4j_driver, neo4j_schema, embedding_model
-
+from configuration import config
 import logging
 logger = logging.getLogger(__file__)
 
@@ -19,6 +19,7 @@ hybrid_store_list=['category','subject','category','chapter']
 
 cypher_check_llm = ChatDeepSeek(
     model='deepseek-chat',
+    api_key=config.DEEPSEEK_API_KEY,
 ).with_structured_output(CypherCheckResponse)
 
 ea = EntityAlignment()

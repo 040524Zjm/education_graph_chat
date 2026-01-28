@@ -18,5 +18,5 @@ neo4j_schema = Neo4jGraph(
 
 embedding_model = HuggingFaceEmbeddings(
     model_name=config.EMBEDDING_MODEL_PATH,
-    model_kwargs={'device': config.DEVICE}
+    model_kwargs=config.DEVICE
 )

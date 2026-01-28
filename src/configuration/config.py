@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 load_dotenv()
 mysql_password = os.getenv('MYSQL_PASSWORD')
 neo4j_password = os.getenv('NEO4J_PASSWORD')
-
+DEEPSEEK_API_KEY = os.getenv('DEEPSEEK_API_KEY')
 
 # 目录
 DATA_DIR = ROOT_DIR / 'data'
@@ -31,4 +31,4 @@ NEO4J_CONFIG = {
 AGENT_WITH_MEMORY = True
 AGENT_STREAM_OUTPUT = True
 
-DEVICE = 'cpu'
+DEVICE = {"device": "cpu"}
