@@ -42,7 +42,7 @@ def import_data_to_mysql() -> None:
         f"DROP DATABASE IF EXISTS {config.MYSQL_CONFIG['database']}; CREATE DATABASE {config.MYSQL_CONFIG['database']};",
     ]
 
-    result = subprocess.run(cmd, stderr=subprocess.PIPE, text=True)
+    result = subprocess.run(cmd, stderr=subprocess.PIPE, text=True) # subprocess可以捕获错误信息
     if result.returncode != 0:
         print(f"{result.stderr.splitlines()[1:][0]}")
         return
@@ -54,7 +54,7 @@ def import_data_to_mysql() -> None:
         f"""
         create table if not exists
                     {config.MYSQL_CONFIG['database']}.entity_mapping (
-                        synonym varchar(255) not null collate utf8mb4_bin comment '同义词',
+                        synonym varchar(255) not null collate utf8mb4_bin comment '同义词', /*同义词,区分大小写*/
                         std_name varchar(255) not null comment '标准词',
                         entity_schema varchar(255) not null comment '实体类型',
                         is_reviewed int default 0 not null comment '是否已审核',
@@ -184,7 +184,7 @@ class DataPipeline:
                     "is_correct "
                     "from edu_graph_dm.test_exam_question "
                     "join ( "
-                    "    select max(id) as id "
+                    "    select max(id) as id " # 最新的id，答题记录主键自增。
                     "    from edu_graph_dm.test_exam_question "
                     "    group by user_id, question_id "
                     ") as latest_question "
@@ -655,7 +655,7 @@ if __name__ == "__main__":
 
     # 加载实体抽取模型
     eemodel = EntityExtractorModelBase(
-        config.ROOT_DIR / 'finetuned' / 'checkpoint' / 'model_best', config.DEVICE, 16
+        config.ROOT_DIR / 'finetuned' / 'checkpoint' / 'model_best', config.DEVICE["device"], 16
     )
 
     # 课程资料与知识体系数据处理
@@ -677,3 +677,58 @@ if __name__ == "__main__":
     # 用户行为数据处理
     user_log_pipeline = DataPipeline()
     user_log_pipeline.query_user_log_from_mysql().import_user_log_to_neo4j()
+
+"""
+/Users/zjm/miniconda3/envs/graph/bin/python /Users/zjm/PycharmProjects/LLM_2026_demo/education_graph_chat/src/datasync/data_prepare.py 
+创建 edu_graph_dm
+edu_graph_dm 创建成功
+导入数据
+数据导入成功
+清空约束
+清空数据
+属性唯一性约束创建成功
+[2026-01-30 15:44:29,939] [    INFO] - >>> [PyTorchInferBackend] Creating Engine ...
+[2026-01-30 15:44:30,000] [    INFO] - >>> [PyTorchInferBackend] Use CPU to inference ...
+[2026-01-30 15:44:30,000] [    INFO] - >>> [PyTorchInferBackend] Engine Created ...
+抽取课程介绍中的知识点
+/Users/zjm/miniconda3/envs/graph/lib/python3.12/site-packages/transformers/modeling_utils.py:1735: FutureWarning: The `device` argument is deprecated and will be removed in v5 of Transformers.
+  warnings.warn(
+抽取出 289 个知识点
+抽取章节名称中的知识点
+抽取出 9300 个知识点
+加载嵌入模型
+检测到 1297 个新增知识点
+huggingface/tokenizers: The current process just got forked, after parallelism has already been used. Disabling parallelism to avoid deadlocks...
+To disable this warning, you can either:
+	- Avoid using `tokenizers` before the fork if possible
+	- Explicitly set the environment variable TOKENIZERS_PARALLELISM=(true | false)
+/Users/zjm/miniconda3/envs/graph/lib/python3.12/site-packages/torch/nn/modules/module.py:1786: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+新增 1297 条知识点到数据库
+102 条数据已存在于向量数据库中
+复用已加载的嵌入模型
+Batches:   0%|          | 0/102 [00:00<?, ?it/s]/Users/zjm/miniconda3/envs/graph/lib/python3.12/site-packages/torch/nn/modules/module.py:1786: FutureWarning: `encoder_attention_mask` is deprecated and will be removed in version 4.55.0 for `BertSdpaSelfAttention.forward`.
+  return forward_call(*args, **kwargs)
+Batches: 100%|██████████| 102/102 [01:12<00:00,  1.40it/s]
+writing into chroma: 100%|██████████| 51/51 [00:04<00:00, 11.34it/s]
+添加 12964 条数据到向量数据库
+课程: 100%|██████████| 1/1 [00:01<00:00,  1.13s/it]
+章节: 100%|██████████| 6/6 [00:02<00:00,  2.39it/s]
+试卷: 100%|██████████| 1/1 [00:00<00:00,  4.40it/s]
+课程中的知识点: 100%|██████████| 1/1 [00:00<00:00,  7.99it/s]
+章节中的知识点: 100%|██████████| 10/10 [00:03<00:00,  3.00it/s]
+试题中的知识点: 0it [00:00, ?it/s]
+创建先修关系...
+成功创建57600条先修关系
+创建包含关系...
+成功创建5531条包含关系
+创建相关关系...
+成功创建0条相关关系
+学生信息: 100%|██████████| 1/1 [00:00<00:00,  9.17it/s]
+学生收藏行为: 100%|██████████| 1/1 [00:00<00:00, 10.90it/s]
+学生答题情况: 100%|██████████| 2/2 [00:00<00:00, 16.21it/s]
+学生章节进度: 100%|██████████| 2/2 [00:00<00:00,  8.40it/s]
+
+进程已结束，退出代码为 0
+
+"""

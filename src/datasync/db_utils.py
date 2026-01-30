@@ -91,6 +91,7 @@ class Neo4jWriter:
         result = self.neo4j_driver.execute_query(query_data_cypher)
         records = result.records
         print(f"查询到节点数：{len(records)}")
+        # 写入向量属性
         for i in range(0, len(records), batch_size):
             nodes = records[i:i + batch_size]
             to_embed_text = [node["text"] for node in nodes]
@@ -102,7 +103,7 @@ class Neo4jWriter:
                 set n.{embedding_property} = $embedding
                 """
                 self.neo4j_driver.execute_query(update_query, parameters_={"id": node["id"], "embedding": embed})
-
+        # 创建向量索引，用于搜索
         create_index_cypher = f"""
         CREATE VECTOR INDEX {label + "_" + label_property + "vector_index"}
         IF NOT EXISTS
