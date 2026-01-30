@@ -1,9 +1,3 @@
-python finetune.py --train_path "/Users/zjm/PycharmProjects/LLM_2026_demo/education_graph_chat/data/processed/course/train.txt"  --dev_path "/Users/zjm/PycharmProjects/LLM_2026_demo/education_graph_chat/data/processed/course/dev.txt"  --save_dir "/Users/zjm/PycharmProjects/LLM_2026_demo/education_graph_chat/finetuned/checkpoint"     --learning_rate 1e-5 --batch_size 16 --max_seq_len 512  --num_epochs 100  --model "/Users/zjm/LLM_path/pretrained/uie_pytorch/uie_base_pytorch" --logging_steps 10 --valid_steps 100 --device "cpu"
-
-todo: Pip install transformers==4.54.0 colorlog
-
-从4.57.6改成了4.54.0 才成功
-
 
 
 ### `src/` 总览（从“用户提问”到“查图数据库再回答”的链路）
