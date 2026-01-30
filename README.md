@@ -3,7 +3,7 @@
 ## 项目信息
 
 - **项目名称**：教育知识图谱智能问答系统（Education Graph Chat）
-- **仓库地址**：``
+- **仓库地址**：`https://github.com/040524Zjm/education_graph_chat`
 
 ---
 
